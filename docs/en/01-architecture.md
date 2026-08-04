@@ -4,14 +4,16 @@
 
 ## Core conclusion
 
-These are not two compiler toolchains. They are two debug backends.
+From the operator's perspective, these are the **MDK/uVision workflow** and the **VS Code workflow**. Underneath, they share the MDK build toolchain and use different debug backends.
 
-| Phase | Shared tool |
+| Phase | Tool |
 |---|---|
+| Workflow A user interface | Keil MDK / uVision |
+| Workflow B user interface | VS Code |
 | Build, link, and AXF generation | Keil MDK `UV4.exe -b` or `-r` |
 | Download and verification | Keil MDK `UV4.exe -f` |
-| Workflow A debug | `UVSC64.dll` controlling a private uVision session |
-| Workflow B debug | CMSIS-DAP + pyOCD + `arm-none-eabi-gdb` |
+| Workflow A debug backend | `UVSC64.dll` controlling a private uVision session |
+| Workflow B debug backend | CMSIS-DAP + pyOCD + `arm-none-eabi-gdb` |
 | Runtime evidence | Serial log, optional but strongly recommended |
 
 In Workflow B, GDB reads symbols from the MDK-generated AXF and controls the target. It does not rebuild the firmware and should not program the QSPI image again.
@@ -20,12 +22,12 @@ In Workflow B, GDB reads symbols from the MDK-generated AXF and controls the tar
 
 | Need | Recommended workflow |
 |---|---|
-| Reuse the exact Keil project, device, and debug configuration | A: UVSC |
-| Use native uVision expressions and debug commands | A: UVSC |
-| Capture backtraces, arguments, locals, and PC/LR/SP as text | B: GDB |
-| Integrate with VS Code debugging | B: GDB |
-| Diagnose Keil-specific startup behavior | A: UVSC |
-| Run a lightweight command-line breakpoint smoke test | B: GDB |
+| Reuse the exact Keil project, device, and debug configuration | A: MDK/uVision |
+| Use native uVision expressions and debug commands | A: MDK/uVision |
+| Capture backtraces, arguments, locals, and PC/LR/SP as text | B: VS Code/GDB |
+| Browse source and variables in VS Code | B: VS Code/GDB |
+| Diagnose Keil-specific startup behavior | A: MDK/uVision |
+| Run a lightweight command-line breakpoint smoke test | B: VS Code/GDB |
 
 ## Shared completion criteria
 
@@ -36,4 +38,3 @@ A zero process exit code is not enough. Require at least:
 3. Proof that execution hit the requested breakpoint, not a manual halt, reset, or fault.
 4. A source location and target PC matching the requested AXF symbol.
 5. Probe ownership released after the session.
-

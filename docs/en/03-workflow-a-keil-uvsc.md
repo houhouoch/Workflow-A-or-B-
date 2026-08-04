@@ -1,4 +1,4 @@
-# Workflow A: Keil MDK + UVSC
+# Workflow A: MDK / uVision Debugging
 
 [简体中文](../zh-CN/03-workflow-a-keil-uvsc.md) | [English](03-workflow-a-keil-uvsc.md) | [Home](../../README.en.md)
 
@@ -58,4 +58,3 @@ stop reason = execution
 - Current source file and line.
 
 If the automation wrapper is missing, rebuild a thin layer over `UVSC64.dll`; do not depend on GUI coordinates.
-

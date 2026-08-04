@@ -1,4 +1,4 @@
-# Workflow B: CMSIS-DAP + pyOCD + GDB/VS Code
+# Workflow B: VS Code Debugging
 
 [简体中文](../zh-CN/04-workflow-b-cmsis-gdb.md) | [English](04-workflow-b-cmsis-gdb.md) | [Home](../../README.en.md)
 
@@ -66,4 +66,3 @@ Also capture `PC/LR/SP`, source file, and source line. A zero GDB exit code or a
 
 > [!WARNING]
 > Do not execute `load` in the GDB script. Keil MDK has already downloaded and verified the image; a second pyOCD/GDB download may bypass the external-Flash algorithm.
-

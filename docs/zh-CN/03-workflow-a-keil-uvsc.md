@@ -1,4 +1,4 @@
-# 流程 A：Keil MDK + UVSC
+# 流程 A：MDK / uVision 调试
 
 [简体中文](03-workflow-a-keil-uvsc.md) | [English](../en/03-workflow-a-keil-uvsc.md) | [返回首页](../../README.md)
 
@@ -58,4 +58,3 @@ stop reason = execution
 - 当前源文件和行号。
 
 如果自动化脚本缺失，优先重建一个薄封装层调用 `UVSC64.dll`，不要依赖 GUI 坐标。
-

@@ -1,4 +1,4 @@
-# 流程 B：CMSIS-DAP + pyOCD + GDB/VS Code
+# 流程 B：VS Code 调试
 
 [简体中文](04-workflow-b-cmsis-gdb.md) | [English](../en/04-workflow-b-cmsis-gdb.md) | [返回首页](../../README.md)
 
@@ -66,4 +66,3 @@ Breakpoint <n>, <requested-symbol>
 
 > [!WARNING]
 > 不要在 GDB 脚本中执行 `load`。固件已经由 Keil MDK 下载和校验，再由 pyOCD/GDB 下载可能绕过外部 Flash 算法。
-
