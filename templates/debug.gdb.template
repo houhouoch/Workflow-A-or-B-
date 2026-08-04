@@ -1,0 +1,22 @@
+set pagination off
+set confirm off
+set breakpoint auto-hw on
+
+file <firmware.axf>
+target extended-remote localhost:3333
+monitor reset halt
+hbreak <breakpoint_symbol>
+continue
+
+echo \n=== BACKTRACE ===\n
+bt
+echo \n=== ARGUMENTS ===\n
+info args
+echo \n=== LOCALS ===\n
+info locals
+echo \n=== REGISTERS ===\n
+info registers
+
+detach
+quit
+

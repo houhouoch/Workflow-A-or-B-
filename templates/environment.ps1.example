@@ -1,0 +1,11 @@
+# Copy these assignments into a private PowerShell profile or local script.
+# Do not commit workstation-specific absolute paths.
+
+$env:KEIL_UV4_PATH = 'C:\Keil_v5\UV4\UV4.exe'
+$env:KEIL_UV4_DIR = 'C:\Keil_v5\UV4'
+$env:FIRMWARE_PROJECT = 'D:\firmware\MDK-ARM\firmware.uvprojx'
+$env:FIRMWARE_AXF = 'D:\firmware\MDK-ARM\Objects\firmware.axf'
+$env:SERIAL_LOG_PATH = 'D:\logs\serial.log'
+$env:CMSIS_DAP_UID = ''
+$env:PYOCD_TARGET = '<target-name>'
+

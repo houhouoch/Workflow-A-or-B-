@@ -1,0 +1,7 @@
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+logs/
+*.log
+*.gdb.log
+*.pyocd.log
+
