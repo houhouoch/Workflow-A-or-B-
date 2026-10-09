@@ -2,7 +2,7 @@
 
 [简体中文](../zh-CN/07-workflow-c-macos-jlink.md) | [English](07-workflow-c-macos-jlink.md) | [Home](../../README.en.md)
 
-**Status: build, verified download and serial runtime evidence validated; source debugging is in progress.**
+**Status: build, verified download, serial evidence and basic source debugging validated; RTOS and tracing pending.**
 
 Validated on 2026-10-09 with Apple Silicon macOS and UDP3900 / STM32H750. This knowledge base describes the reusable workflow; the firmware repository owns build scripts, flash algorithms, linker layout and watchdog handling.
 
@@ -19,7 +19,7 @@ flowchart LR
     B -. planned .-> H[J-Link GDB Server + Arm GDB]
 ```
 
-The validated download uses **pyOCD through the SEGGER library**. Native SEGGER GDB Server, J-Flash and Commander external-QSPI programming have not been validated. VCOM is distinct from RTT.
+The validated download uses **pyOCD through the SEGGER library**. Basic native SEGGER GDB Server source debugging is validated. J-Flash and Commander external-QSPI programming remain unvalidated. VCOM is distinct from RTT.
 
 | Capability | Status | Evidence or next acceptance target |
 |---|---|---|
@@ -27,7 +27,7 @@ The validated download uses **pyOCD through the SEGGER library**. Native SEGGER 
 | QSPI download through pyOCD/J-Link | Validated | Download log and matching full readback |
 | Memory, CPU, vectors, ticks and UART settings | Validated | Running CPU, VTOR, advancing ticks, 115200 |
 | VCOM startup logs | Validated | DSP 9/9, UI ready, one boot in 45 seconds |
-| Source breakpoints, steps, variables and backtrace | Pending | Real execution breakpoint and matching ELF source line |
+| Source breakpoints, steps, variables and backtrace | Basic acceptance passed | Hardware hits, source step, parameters and real callers; optimized variables and RTOS stack boundary remain limited |
 | Watchpoints and HardFault capture | Pending | Actual trigger, registers and exception stack |
 | FreeRTOS task inspection | Pending | Native GDB Server plugin acceptance on this firmware |
 | RTT | Integration and validation pending | Nonblocking buffers and H7 cache visibility |
@@ -178,8 +178,8 @@ Require matching lengths and SHA-256. Expected VTOR is 0x90002000. Combine Runni
 
 ## Debugging roadmap
 
-First validate J-Link GDB Server + Arm GDB with an actual hardware breakpoint, variables, source line and backtrace. Current Release uses `-Os -g0`; a separate `-Os -g3` configuration is proposed but not implemented. Debug ELF must match target machine code.
+Basic J-Link GDB Server + Arm GDB acceptance passed. See the [source-debug record](09-workflow-c-source-debug-2026-10-09.md) for commands and evidence. The firmware repository now has a separate `ReleaseSymbols` configuration (`-Os -g3`); its machine code matched the full Release readback. Ordinary Release retains `-Os -g0`.
 
-Then validate watchpoints, fault context and FreeRTOS task inspection. Add RTT, SystemView or SWO when a concrete diagnostic need calls for it. RTT requires target instrumentation; nonblocking behavior and H7 cache/buffer visibility need acceptance tests. Keep output OFF/List stopped during intrusive debugging, and restore Release afterwards.
+Next validate watchpoints, fault context and FreeRTOS task inspection. Current acceptance covers actual functions and callers, not every task stack. Add RTT, SystemView or SWO when needed, with nonblocking behavior and H7 cache visibility validated. Keep output OFF/List stopped, remove breakpoints, restore the saved freeze register, release backends and verify Release runtime afterwards.
 
 Official references: [GDB Server](https://kb.segger.com/J-Link_GDB_Server), [RTT](https://www.segger.com/products/debug-probes/j-link/technology/about-real-time-transfer/), [SystemView](https://www.segger.com/products/development-tools/systemview/). Vendor capabilities do not imply acceptance on this target.

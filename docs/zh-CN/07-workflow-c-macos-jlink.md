@@ -2,7 +2,7 @@
 
 [简体中文](07-workflow-c-macos-jlink.md) | [English](../en/07-workflow-c-macos-jlink.md) | [返回首页](../../README.md)
 
-**状态：编译、下载校验和串口运行证据已验证；源码调试建设中。**
+**状态：编译、下载校验、串口和基础源码调试已验证；RTOS 与实时跟踪待验证。**
 
 2026-10-09 在 Apple Silicon macOS、UDP3900 / STM32H750 上完成端到端验证。这里记录可复用流程；实际构建、QSPI 算法、链接布局和看门狗脚本由目标工程维护。
 
@@ -19,7 +19,7 @@ flowchart LR
     B -. planned .-> H[J-Link GDB Server + Arm GDB]
 ```
 
-本次 J-Link 下载由 **pyOCD 调用 SEGGER 动态库**完成。尚未验收 SEGGER 原生 GDB Server、J-Flash 或 J-Link Commander 的外部 QSPI 编程。VCOM 日志也不等于 RTT。
+本次 J-Link 下载由 **pyOCD 调用 SEGGER 动态库**完成。SEGGER 原生 GDB Server 的基础源码调试已验收；J-Flash 或 J-Link Commander 的外部 QSPI 编程仍未验收。VCOM 日志也不等于 RTT。
 
 | 能力 | 当前状态 | 验收证据或下一步 |
 |---|---|---|
@@ -27,7 +27,7 @@ flowchart LR
 | pyOCD 经 J-Link 下载 QSPI | 已验证 | 镜像校验、下载日志和全量回读一致 |
 | 运行状态、向量表、Tick 与 UART 参数读取 | 已验证 | CPU Running、VTOR、Tick 递增、115200 |
 | VCOM 串口启动日志 | 已验证 | DSP 9/9、UI ready、45 秒内一次启动 |
-| GDB 源码断点、单步、变量、调用栈 | 待验证 | 硬件断点实际命中并匹配 ELF 源行 |
+| GDB 源码断点、单步、变量、调用栈 | 基础验收通过 | 硬件断点实际命中、源码单步、参数和真实调用者可读；优化变量与 RTOS 栈边界有限制 |
 | 数据观察点与 HardFault 现场 | 待验证 | 真实触发、寄存器和异常栈对应 |
 | FreeRTOS 任务与各任务调用栈 | 待验证 | 原生 GDB Server RTOS 插件与本工程验收 |
 | RTT | 待接入和验证 | 固件缓冲区、非阻塞日志、H7 缓存可见性 |
@@ -178,10 +178,10 @@ lsof "$SERIAL_PORT"
 
 ## 后续调试路线
 
-1. 优先建立 J-Link GDB Server + Arm GDB 的真实硬件断点、变量和调用栈验收。
-2. 当前 Release 使用 `-Os -g0`；建议未来增设独立 `-Os -g3` 配置，保持优化行为并携带源码信息。该配置尚未实施。调试 ELF 必须与板上机器码对应。
-3. 再验证观察点、异常现场与 FreeRTOS 任务查看。
-4. 最后按需求接入 RTT、SystemView 或 SWO。RTT 需要固件实现和缓冲区；非阻塞策略、H7 缓存以及 CPU/探针可见性需要实际验证。
-5. 暂停与复位会影响设备任务和通信；板测保持 OFF、List 停止，调试结束恢复 Release 并重新验收。
+1. J-Link GDB Server + Arm GDB 的基础验收已通过，命令和证据见[源码调试记录](09-workflow-c-source-debug-2026-10-09.md)。
+2. 工程新增独立 `ReleaseSymbols` 配置（`-Os -g3`）；本次机器码和 Release 全量回读相同。普通 Release 保持 `-Os -g0`。调试 ELF 必须与板上机器码对应。
+3. 接着验证观察点、异常现场与 FreeRTOS 任务查看。当前仅验收实际函数及调用者，不能宣称全任务栈已打通。
+4. 最后按需求接入 RTT、SystemView 或 SWO。RTT 的非阻塞策略、H7 缓存以及 CPU/探针可见性需要实际验证。
+5. 板测保持 OFF、List 停止，结束后删除断点、恢复冻结寄存器、释放后端并验证 Release 运行。
 
 官方参考：[GDB Server](https://kb.segger.com/J-Link_GDB_Server)、[RTT](https://www.segger.com/products/debug-probes/j-link/technology/about-real-time-transfer/)、[SystemView](https://www.segger.com/products/development-tools/systemview/)。文档中的工具能力不代表本工程已经完成验收。

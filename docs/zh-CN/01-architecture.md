@@ -46,7 +46,7 @@
 | 需求 | 选择 |
 |---|---|
 | Apple Silicon macOS 编译、下载与运行证据 | C：已在 UDP3900 验证 |
-| J-Link 原生 GDB 源码调试 | C 的下一阶段，尚未验证 |
+| J-Link 原生 GDB 源码调试 | C 的基础源码调试已验收；RTOS 栈待验证 |
 | RTT / FreeRTOS / SystemView / SWO | C 的路线图，分别验收 |
 
 C 的基础验收为构建与主机检查通过、完整镜像回读匹配、CPU/Tick 正常、新串口日志及资源释放。源码调试阶段另需真实断点命中和匹配 ELF 的源行/调用栈，不能套用 Keil 的下载日志标志。详情见[能力矩阵](07-workflow-c-macos-jlink.md)与[实测记录](08-workflow-c-validation-2026-10-09.md)。

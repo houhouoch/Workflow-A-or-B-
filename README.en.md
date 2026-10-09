@@ -8,9 +8,9 @@ It preserves two Windows debug workflows and adds an Apple Silicon macOS workflo
 
 - **Workflow A: MDK / uVision debugging**
 - **Workflow B: VS Code debugging**
-- **Workflow C: macOS + CMake/GCC + J-Link**, with build/download/serial validated and source debugging pending.
+- **Workflow C: macOS + CMake/GCC + J-Link**, with build/download/serial and basic source debugging validated.
 
-Workflow C builds with CMake/GCC, programs through pyOCD and the SEGGER library, and verifies full readback plus VCOM logs. Native SEGGER GDB debugging, RTT and tracing remain unvalidated.
+Workflow C builds with CMake/GCC, programs through pyOCD and the SEGGER library, and verifies full readback plus VCOM logs. Native SEGGER GDB hardware breakpoints, steps, parameters and function callers passed basic acceptance; FreeRTOS task inspection, RTT and tracing remain pending.
 
 Workflow A stays inside the Keil/uVision ecosystem. Workflow B debugs from VS Code through CMSIS-DAP, pyOCD, and GDB. Both still use Keil MDK for build and verified download; Workflow B is not a separate GCC build.
 
@@ -40,6 +40,8 @@ flowchart LR
 6. [AI automation contract and new-machine checklist](docs/en/06-ai-automation-and-checklist.md)
 7. [Workflow C: macOS + CMake/GCC + J-Link](docs/en/07-workflow-c-macos-jlink.md)
 8. [Workflow C validation: 2026-10-09](docs/en/08-workflow-c-validation-2026-10-09.md)
+
+9. [Workflow C source-debug acceptance: 2026-10-09](docs/en/09-workflow-c-source-debug-2026-10-09.md)
 
 ## Usage
 

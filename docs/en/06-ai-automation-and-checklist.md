@@ -58,6 +58,6 @@ Do not start with the full chain on a new machine. Layered validation isolates f
 - [ ] Current probe VCOM enabled, correct port selected; 115200/8N1/no flow control.
 - [ ] Capture starts before reset, is read-only with DTR/RTS off, and receives fresh completion markers.
 - [ ] Serial ownership and private debug processes released afterwards.
-- [ ] Source debugging, RTT, RTOS and tracing remain separately pending until accepted.
+- [ ] Source debugging requires real breakpoint, step, parameter and caller evidence; accept RTT, RTOS and tracing separately.
 
 See [Workflow C](07-workflow-c-macos-jlink.md). This checklist does not authorize enabling power output or changing firmware behavior.

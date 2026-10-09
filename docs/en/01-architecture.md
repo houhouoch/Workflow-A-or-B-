@@ -46,7 +46,7 @@ A zero process exit code is not enough. Require at least:
 | Need | Selection |
 |---|---|
 | Apple Silicon build, download and runtime evidence | C: validated on UDP3900 |
-| Native J-Link GDB source debugging | Next C stage, not validated |
+| Native J-Link GDB source debugging | Basic source debugging validated; RTOS stacks pending |
 | RTT / FreeRTOS / SystemView / SWO | C roadmap, each separately validated |
 
 Base acceptance requires build/check success, matching full readback, Running CPU/advancing ticks, fresh serial evidence and cleanup. Source debugging additionally requires a real breakpoint and matching ELF source/backtrace. Keil log markers do not apply to C. See the [capability matrix](07-workflow-c-macos-jlink.md) and [validation record](08-workflow-c-validation-2026-10-09.md).
