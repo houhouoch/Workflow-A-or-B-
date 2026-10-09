@@ -61,3 +61,8 @@ if ($null -eq $p) { 'NO_DEBUG_PROCESSES' } else { $p }
 
 Generated `.log` files and temporary `.gdb` scripts are diagnostic evidence and should not be committed.
 
+## Workflow C evidence and troubleshooting
+
+Workflow C uses ELF, pyOCD and full SHA-256 readback comparison rather than Keil download markers. See [Workflow C](07-workflow-c-macos-jlink.md) for VCOM, baud rates, COMTool thread races, external QSPI bases, reset warnings and cleanup.
+
+On 2026-10-09 the loader reported identical contents and skipped programming. Independent serial capture passed after USB replug, with DSP 9/9 and UI ready. Report programming activity, image equality and runtime evidence separately. See the [validation summary](08-workflow-c-validation-2026-10-09.md).

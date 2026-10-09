@@ -2,6 +2,8 @@
 
 [简体中文](02-shared-setup.md) | [English](../en/02-shared-setup.md) | [返回首页](../../README.md)
 
+本页公共环境针对 Windows 流程 A/B；macOS 的环境与连接请看[流程 C](07-workflow-c-macos-jlink.md)和[macOS 环境模板](../../templates/environment.macos.sh.example)。
+
 ## 硬件
 
 - 可稳定供电的 Cortex-M 目标板。

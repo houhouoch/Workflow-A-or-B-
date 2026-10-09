@@ -1,0 +1,16 @@
+# Copy this file outside Git, replace every placeholder, and source it in bash/zsh.
+# Use paths without spaces for pyOCD commander memory-file arguments.
+# This template configures paths only; it does not flash or reset a target.
+export FIRMWARE_ROOT='/absolute/path/to/UDP_3900_CMAKE'
+export SEGGER_RUNTIME_DIR='/absolute/path/to/JLink'
+export JLINK_EXE="$SEGGER_RUNTIME_DIR/JLinkExe"
+export PYOCD='/absolute/path/to/pyocd'
+export SERIAL_PYTHON='/absolute/path/to/python-with-pyserial'
+export CMSIS_PACK_ROOT='/absolute/path/to/CMSIS/packs'
+export ARM_GNU_TOOLCHAIN_ROOT='/absolute/path/to/arm-gnu-toolchain'
+export PATH="$ARM_GNU_TOOLCHAIN_ROOT/bin:$PATH"
+export JLINK_UID='<current-probe-serial-number>'
+export SERIAL_PORT='/dev/cu.usbmodem<current-probe-id>'
+export RUN_FILE="$FIRMWARE_ROOT/build/Release/UDP3900+CMake.cbuild-run.yml"
+export WATCHDOG_SCRIPT="$FIRMWARE_ROOT/tools/programming/pyocd_freeze_iwdg.py"
+export EVIDENCE_DIR='/absolute/path/to/new-per-run-evidence-directory'

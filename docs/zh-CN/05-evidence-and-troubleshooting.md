@@ -61,3 +61,8 @@ if ($null -eq $p) { 'NO_DEBUG_PROCESSES' } else { $p }
 
 生成的 `.log`、临时 `.gdb` 文件属于诊断证据，不应提交到 Git。
 
+## 流程 C 的证据与排错
+
+流程 C 使用 ELF、pyOCD 和完整 SHA-256 回读对比，不使用 Keil 下载标志。VCOM、波特率、COMTool 线程竞态、外部 QSPI 起点、复位警告和资源释放见[流程 C](07-workflow-c-macos-jlink.md)。
+
+2026-10-09 的实测显示：下载工具报告 identical 并跳过重复写入；USB 重插后独立串口采集通过，DSP 9/9、UI ready。必须把实际编程、镜像一致与运行证据分开报告，完整记录见[验收摘要](08-workflow-c-validation-2026-10-09.md)。

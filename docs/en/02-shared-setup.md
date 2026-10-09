@@ -2,6 +2,8 @@
 
 [简体中文](../zh-CN/02-shared-setup.md) | [English](02-shared-setup.md) | [Home](../../README.en.md)
 
+This page covers Windows Workflows A/B. For macOS, use [Workflow C](07-workflow-c-macos-jlink.md) and the [environment template](../../templates/environment.macos.sh.example).
+
 ## Hardware
 
 - A stably powered Cortex-M target.

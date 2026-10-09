@@ -2,7 +2,7 @@
 
 [简体中文](../zh-CN/01-architecture.md) | [English](01-architecture.md) | [Home](../../README.en.md)
 
-## Core conclusion
+## Workflow A / B toolchain
 
 From the operator's perspective, these are the **MDK/uVision workflow** and the **VS Code workflow**. Underneath, they share the MDK build toolchain and use different debug backends.
 
@@ -29,7 +29,7 @@ In Workflow B, GDB reads symbols from the MDK-generated AXF and controls the tar
 | Diagnose Keil-specific startup behavior | A: MDK/uVision |
 | Run a lightweight command-line breakpoint smoke test | B: VS Code/GDB |
 
-## Shared completion criteria
+## Workflow A / B completion criteria
 
 A zero process exit code is not enough. Require at least:
 
@@ -38,3 +38,15 @@ A zero process exit code is not enough. Require at least:
 3. Proof that execution hit the requested breakpoint, not a manual halt, reset, or fault.
 4. A source location and target PC matching the requested AXF symbol.
 5. Probe ownership released after the session.
+
+## Workflow C: macOS and GCC
+
+[Workflow C](07-workflow-c-macos-jlink.md) builds an ELF with CMake/Ninja/GCC, programs through pyOCD and the SEGGER library, then verifies readback and VCOM logs. It does not use Keil for build. Board-specific algorithms and QSPI layout come from the firmware repository.
+
+| Need | Selection |
+|---|---|
+| Apple Silicon build, download and runtime evidence | C: validated on UDP3900 |
+| Native J-Link GDB source debugging | Next C stage, not validated |
+| RTT / FreeRTOS / SystemView / SWO | C roadmap, each separately validated |
+
+Base acceptance requires build/check success, matching full readback, Running CPU/advancing ticks, fresh serial evidence and cleanup. Source debugging additionally requires a real breakpoint and matching ELF source/backtrace. Keil log markers do not apply to C. See the [capability matrix](07-workflow-c-macos-jlink.md) and [validation record](08-workflow-c-validation-2026-10-09.md).
