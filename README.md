@@ -43,6 +43,7 @@ flowchart LR
 
 9. [流程 C 源码调试验收：2026-10-09](docs/zh-CN/09-workflow-c-source-debug-2026-10-09.md)
 10. [流程 C 阶段一：任务与故障定位](docs/zh-CN/10-workflow-c-stage1-2026-10-09.md)
+11. [流程 C：Ozone 图形调试实例](docs/zh-CN/11-workflow-c-ozone-2026-10-09.md)
 
 ## 使用方式
 

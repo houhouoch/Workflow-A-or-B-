@@ -43,6 +43,7 @@ flowchart LR
 
 9. [Workflow C source-debug acceptance: 2026-10-09](docs/en/09-workflow-c-source-debug-2026-10-09.md)
 10. [Workflow C stage-one diagnostics](docs/en/10-workflow-c-stage1-2026-10-09.md)
+11. [Workflow C: Ozone graphical debug example](docs/en/11-workflow-c-ozone-2026-10-09.md)
 
 ## Usage
 
