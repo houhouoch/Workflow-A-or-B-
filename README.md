@@ -10,7 +10,7 @@
 - **流程 B：VS Code 调试流程**
 - **流程 C：macOS + CMake/GCC + J-Link**，编译下载、串口和基础源码调试已验证。
 
-流程 C 通过 CMake/GCC 编译、pyOCD 经 SEGGER 库操作 J-Link 下载，再进行全量回读和 VCOM 串口验收。SEGGER 原生 GDB 的硬件断点、单步、参数和函数调用栈已基础验收；FreeRTOS 全任务查看、RTT 和实时跟踪仍待验证。
+流程 C 通过 CMake/GCC 编译、pyOCD 经 SEGGER 库操作 J-Link 下载，再进行全量回读和 VCOM 串口验收。SEGGER 原生 GDB 的硬件断点、单步、参数和函数调用栈已基础验收；FreeRTOS 任务查看、硬件观察点和普通 IRQ 异常栈采集已基础验证；真实 HardFault、RTT 和实时跟踪仍待验证。本轮 VCOM 恢复未通过，见阶段一记录。
 
 流程 A 在 Keil/uVision 体系内完成调试；流程 B 在 VS Code 中通过 CMSIS-DAP、pyOCD 和 GDB 调试。两套流程仍共用 Keil MDK 完成编译和下载，VS Code 流程不是 GCC 重新编译流程。
 
@@ -42,6 +42,7 @@ flowchart LR
 8. [流程 C 实测记录：2026-10-09](docs/zh-CN/08-workflow-c-validation-2026-10-09.md)
 
 9. [流程 C 源码调试验收：2026-10-09](docs/zh-CN/09-workflow-c-source-debug-2026-10-09.md)
+10. [流程 C 阶段一：任务与故障定位](docs/zh-CN/10-workflow-c-stage1-2026-10-09.md)
 
 ## 使用方式
 

@@ -28,8 +28,8 @@ flowchart LR
 | 运行状态、向量表、Tick 与 UART 参数读取 | 已验证 | CPU Running、VTOR、Tick 递增、115200 |
 | VCOM 串口启动日志 | 已验证 | DSP 9/9、UI ready、45 秒内一次启动 |
 | GDB 源码断点、单步、变量、调用栈 | 基础验收通过 | 硬件断点实际命中、源码单步、参数和真实调用者可读；优化变量与 RTOS 栈边界有限制 |
-| 数据观察点与 HardFault 现场 | 待验证 | 真实触发、寄存器和异常栈对应 |
-| FreeRTOS 任务与各任务调用栈 | 待验证 | 原生 GDB Server RTOS 插件与本工程验收 |
+| 数据观察点与异常快照 | 观察点及普通 IRQ 栈已验证 | 快照工具与 11 项解析测试通过；真实 HardFault 尚待验收 |
+| FreeRTOS 任务与调用栈 | 基础验收通过 | 9–10 个任务可查看；状态用内核链表核对，任务入口以上回溯有限制 |
 | RTT | 待接入和验证 | 固件缓冲区、非阻塞日志、H7 缓存可见性 |
 | SystemView / SWO | 按需求推进，未验证 | RTOS 事件接入或 SWO 连线、时钟和采集验证 |
 | SEGGER 原生工具编程外部 QSPI | 待验证 | 专用 loader / device 配置和回读 |
@@ -180,7 +180,7 @@ lsof "$SERIAL_PORT"
 
 1. J-Link GDB Server + Arm GDB 的基础验收已通过，命令和证据见[源码调试记录](09-workflow-c-source-debug-2026-10-09.md)。
 2. 工程新增独立 `ReleaseSymbols` 配置（`-Os -g3`）；本次机器码和 Release 全量回读相同。普通 Release 保持 `-Os -g0`。调试 ELF 必须与板上机器码对应。
-3. 接着验证观察点、异常现场与 FreeRTOS 任务查看。当前仅验收实际函数及调用者，不能宣称全任务栈已打通。
+3. [阶段一实测](10-workflow-c-stage1-2026-10-09.md)已验证任务查看、硬件观察点和普通 IRQ 异常栈采集。真实 HardFault 与本轮 VCOM 恢复仍待验证。
 4. 最后按需求接入 RTT、SystemView 或 SWO。RTT 的非阻塞策略、H7 缓存以及 CPU/探针可见性需要实际验证。
 5. 板测保持 OFF、List 停止，结束后删除断点、恢复冻结寄存器、释放后端并验证 Release 运行。
 

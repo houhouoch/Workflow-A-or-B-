@@ -10,7 +10,7 @@ It preserves two Windows debug workflows and adds an Apple Silicon macOS workflo
 - **Workflow B: VS Code debugging**
 - **Workflow C: macOS + CMake/GCC + J-Link**, with build/download/serial and basic source debugging validated.
 
-Workflow C builds with CMake/GCC, programs through pyOCD and the SEGGER library, and verifies full readback plus VCOM logs. Native SEGGER GDB hardware breakpoints, steps, parameters and function callers passed basic acceptance; FreeRTOS task inspection, RTT and tracing remain pending.
+Workflow C builds with CMake/GCC, programs through pyOCD and the SEGGER library, and verifies full readback plus VCOM logs. Native SEGGER GDB hardware breakpoints, steps, parameters and function callers passed basic acceptance; FreeRTOS tasks, hardware watchpoints and ordinary IRQ stack capture passed basic acceptance; real HardFault, RTT and tracing remain pending. Fresh VCOM recovery is pending in the stage-one record.
 
 Workflow A stays inside the Keil/uVision ecosystem. Workflow B debugs from VS Code through CMSIS-DAP, pyOCD, and GDB. Both still use Keil MDK for build and verified download; Workflow B is not a separate GCC build.
 
@@ -42,6 +42,7 @@ flowchart LR
 8. [Workflow C validation: 2026-10-09](docs/en/08-workflow-c-validation-2026-10-09.md)
 
 9. [Workflow C source-debug acceptance: 2026-10-09](docs/en/09-workflow-c-source-debug-2026-10-09.md)
+10. [Workflow C stage-one diagnostics](docs/en/10-workflow-c-stage1-2026-10-09.md)
 
 ## Usage
 

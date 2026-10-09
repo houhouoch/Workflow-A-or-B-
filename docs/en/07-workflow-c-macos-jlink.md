@@ -28,8 +28,8 @@ The validated download uses **pyOCD through the SEGGER library**. Basic native S
 | Memory, CPU, vectors, ticks and UART settings | Validated | Running CPU, VTOR, advancing ticks, 115200 |
 | VCOM startup logs | Validated | DSP 9/9, UI ready, one boot in 45 seconds |
 | Source breakpoints, steps, variables and backtrace | Basic acceptance passed | Hardware hits, source step, parameters and real callers; optimized variables and RTOS stack boundary remain limited |
-| Watchpoints and HardFault capture | Pending | Actual trigger, registers and exception stack |
-| FreeRTOS task inspection | Pending | Native GDB Server plugin acceptance on this firmware |
+| Watchpoints and exception snapshots | Watchpoint and ordinary IRQ stack verified | Capture tools and 11 parser tests passed; real HardFault pending |
+| FreeRTOS task inspection | Basic acceptance passed | 9–10 tasks, kernel-state cross-check and callers; task-entry unwind limits remain |
 | RTT | Integration and validation pending | Nonblocking buffers and H7 cache visibility |
 | SystemView / SWO | Pending, driven by need | Event instrumentation or trace wiring and clock checks |
 | Native SEGGER external-QSPI programming | Pending | Board-specific loader/device configuration and readback |
@@ -180,6 +180,6 @@ Require matching lengths and SHA-256. Expected VTOR is 0x90002000. Combine Runni
 
 Basic J-Link GDB Server + Arm GDB acceptance passed. See the [source-debug record](09-workflow-c-source-debug-2026-10-09.md) for commands and evidence. The firmware repository now has a separate `ReleaseSymbols` configuration (`-Os -g3`); its machine code matched the full Release readback. Ordinary Release retains `-Os -g0`.
 
-Next validate watchpoints, fault context and FreeRTOS task inspection. Current acceptance covers actual functions and callers, not every task stack. Add RTT, SystemView or SWO when needed, with nonblocking behavior and H7 cache visibility validated. Keep output OFF/List stopped, remove breakpoints, restore the saved freeze register, release backends and verify Release runtime afterwards.
+[Stage-one acceptance](10-workflow-c-stage1-2026-10-09.md) covers task inspection, hardware watchpoints and ordinary IRQ stack capture. Real HardFault and this run’s VCOM recovery remain pending. Add RTT, SystemView or SWO when needed, with nonblocking behavior and H7 cache visibility validated. Keep output OFF/List stopped, remove breakpoints, restore the saved freeze register, release backends and verify Release runtime afterwards.
 
 Official references: [GDB Server](https://kb.segger.com/J-Link_GDB_Server), [RTT](https://www.segger.com/products/debug-probes/j-link/technology/about-real-time-transfer/), [SystemView](https://www.segger.com/products/development-tools/systemview/). Vendor capabilities do not imply acceptance on this target.
