@@ -27,3 +27,22 @@ No real HardFault occurred. Ordinary IRQ capture does not establish actual HardF
 Fresh VCOM capture returned zero bytes across two reopen/reset attempts. Recovery awaits USB reconnect and recapture; earlier UART acceptance is not this run's result. The serial port is released. RTT, SystemView and SWO remain pending. Firmware behavior was unchanged and no programming or load/long-duration acceptance occurred. Existing uncommitted firmware inputs mean the tools commit alone cannot reproduce the image.
 
 References: [SEGGER RTOS option](https://kb.segger.com/J-Link_GDB_Server#-rtos), [ST Cortex-M7 PM0253](https://www.st.com/resource/en/programming_manual/DM00237416.pdf).
+
+## Stage-one tool improvements
+
+Implemented on 2026-10-09 in firmware commit [d1336bab](https://github.com/houhouoch/UDP_3900_CMAKE/commit/d1336bab).
+
+- Both connection templates share a [session cleanup script](https://github.com/houhouoch/UDP_3900_CMAKE/blob/d1336bab/tools/programming/jlink_session.gdb). Direct quit/detach halts the CPU, removes breakpoints/watchpoints, restores the saved freeze register and resumes. Explicit cleanup is repeatable. Both exit paths passed real-target checks: CPU Running, freeze register and CFSR/HFSR zero. Forced termination or lost connectivity cannot guarantee cleanup; hooks replace existing same-name hooks in this GDB session.
+- The [decoder](https://github.com/houhouoch/UDP_3900_CMAKE/blob/d1336bab/tools/macos/decode_fault_snapshot.py) accepts CRLF, rejects duplicate register/stack records and truncated/oversized words, and cross-checks 8-byte stack alignment, active exception, EXC_RETURN mode and PC alignment. Readable but untrusted words remain in raw_frame without trusted symbolization.
+- Optional paired --image/--readback inputs compare ELF-derived machine code, APP.BIN and the supplied full target dump byte for byte. Mismatch fails. Original calls remain supported without claiming automatic matching. Dumps must start at APP base 0x90002000; offline equality does not establish freshness or probe identity.
+- JSON includes the capture-log hash. Output cannot overwrite an input; successful reports replace the destination via a temporary file and failed validation preserves the previous report.
+- Tests increased from 11 to 17, covering format ambiguity, inconsistent contexts, image mismatches and input/report protection. The earlier real TIM17 snapshot passed the new decoder and supplied ELF/APP/readback matched. Architecture checks and Release rebuild passed; size/CRC remained 4,225,012 / 0x4BCC358A.
+
+```sh
+python3 tools/macos/decode_fault_snapshot.py /absolute/path/fault-raw.log \
+  --elf build/ReleaseSymbols/UDP3900.elf \
+  --image APP.BIN --readback /absolute/path/fresh-app-readback.bin \
+  --output /absolute/path/fault.json
+```
+
+Use --objcopy and --addr2line for explicit tool paths. No programming or reset was required for these host-tool changes. Real HardFault and VCOM recovery remain pending as described above. See the [firmware guide](https://github.com/houhouoch/UDP_3900_CMAKE/blob/d1336bab/docs/JLINK_STAGE1_DIAGNOSTICS.md) and [official GDB hooks reference](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Hooks.html).

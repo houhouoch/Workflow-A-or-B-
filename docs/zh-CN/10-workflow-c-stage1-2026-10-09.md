@@ -28,3 +28,22 @@
 - RTT、SystemView、SWO 尚未接入；本阶段没有改固件运行逻辑、没有重新烧录、没有进行带载或长期稳定性验收。板上镜像包含此前未提交改动，工具提交号不是镜像的完整重现依据。
 
 官方参考：[SEGGER GDB Server RTOS 参数](https://kb.segger.com/J-Link_GDB_Server#-rtos)、[ST Cortex-M7 PM0253](https://www.st.com/resource/en/programming_manual/DM00237416.pdf)。
+
+## 阶段一工具优化
+
+2026-10-09 完成优化，工程提交 [d1336bab](https://github.com/houhouoch/UDP_3900_CMAKE/commit/d1336bab)。
+
+- 两个连接模板共用 [会话清理脚本](https://github.com/houhouoch/UDP_3900_CMAKE/blob/d1336bab/tools/programming/jlink_session.gdb)。直接 quit/detach 也会先 halt、清除断点/观察点、恢复冻结寄存器并继续运行；显式清理可重复执行。实机分别验证两个退出入口，最终 CPU Running，冻结寄存器与 CFSR/HFSR 均为零。强制杀进程或连接丢失不保证清理；钩子会替换本 GDB 会话的同名钩子。
+- [异常解析器](https://github.com/houhouoch/UDP_3900_CMAKE/blob/d1336bab/tools/macos/decode_fault_snapshot.py)兼容 CRLF，拒绝重复寄存器/栈地址、截断与超宽值，并核对 8 字节栈对齐、当前异常号、EXC_RETURN 返回模式和 PC。可读但不可信的栈字保留在 raw_frame，不进行可信符号解析。
+- 可选 --image 和 --readback 成对输入：自动从 ELF 导出机器码，逐字节比较 ELF、APP.BIN 与提供的完整回读文件。镜像不一致时失败；缺省参数兼容原调用但不声称自动核对通过。回读地址必须为 APP 的 0x90002000，该离线检查不能证明文件新鲜度或探针身份。
+- JSON 增加采集日志哈希；输出不能覆盖输入文件。校验成功后通过临时文件替换报告，失败保留原报告。
+- 测试由 11 项增至 17 项，新增日志格式、上下文矛盾、镜像不一致及输入/报告保护测试。上一轮真实 TIM17 快照通过新解析器，提供的 ELF/APP/回读一致；Release 重建与架构检查通过，大小/CRC 保持 4,225,012 / 0x4BCC358A。
+
+```sh
+python3 tools/macos/decode_fault_snapshot.py /absolute/path/fault-raw.log \
+  --elf build/ReleaseSymbols/UDP3900.elf \
+  --image APP.BIN --readback /absolute/path/fresh-app-readback.bin \
+  --output /absolute/path/fault.json
+```
+
+工具绝对路径可通过 --objcopy 与 --addr2line 指定。没有为这次主机工具改动重新烧录或复位。本轮优化不改变上文真实 HardFault 和 VCOM 恢复的待验收状态。完整操作见[工程说明](https://github.com/houhouoch/UDP_3900_CMAKE/blob/d1336bab/docs/JLINK_STAGE1_DIAGNOSTICS.md)。退出钩子依据 [GDB 官方说明](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Hooks.html)。

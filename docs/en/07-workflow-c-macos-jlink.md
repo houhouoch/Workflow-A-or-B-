@@ -28,7 +28,7 @@ The validated download uses **pyOCD through the SEGGER library**. Basic native S
 | Memory, CPU, vectors, ticks and UART settings | Validated | Running CPU, VTOR, advancing ticks, 115200 |
 | VCOM startup logs | Validated | DSP 9/9, UI ready, one boot in 45 seconds |
 | Source breakpoints, steps, variables and backtrace | Basic acceptance passed | Hardware hits, source step, parameters and real callers; optimized variables and RTOS stack boundary remain limited |
-| Watchpoints and exception snapshots | Watchpoint and ordinary IRQ stack verified | Capture tools and 11 parser tests passed; real HardFault pending |
+| Watchpoints and exception snapshots | Watchpoint and ordinary IRQ stack verified | Capture tools and 17 parser tests passed; real HardFault pending |
 | FreeRTOS task inspection | Basic acceptance passed | 9–10 tasks, kernel-state cross-check and callers; task-entry unwind limits remain |
 | RTT | Integration and validation pending | Nonblocking buffers and H7 cache visibility |
 | SystemView / SWO | Pending, driven by need | Event instrumentation or trace wiring and clock checks |
